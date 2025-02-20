@@ -48,12 +48,10 @@ const handleCreateMeme = async () => {
   <div class="p-6 max-w-3xl mx-auto">
     <h2 class="text-3xl font-bold text-center text-gray-800">🎨 Maak een Meme</h2>
 
-    <!-- Foutmelding weergeven -->
     <div v-if="errorMessage" class="text-red-500 text-center mt-4">
       {{ errorMessage }}
     </div>
 
-    <!-- Meme selector -->
     <Select
       v-model="selectedMeme"
       :options="memes"
@@ -62,12 +60,10 @@ const handleCreateMeme = async () => {
       class="w-full mt-4"
     />
 
-    <!-- Meme preview -->
     <div v-if="selectedMeme" class="mt-4 flex justify-center">
       <Image :src="selectedMeme.url" alt="Meme" width="300" preview class="rounded-lg shadow-md" />
     </div>
 
-    <!-- Tekst invoervelden -->
     <div class="mt-4">
       <label class="text-gray-700 font-medium">Bovenste tekst</label>
       <InputText
@@ -84,7 +80,6 @@ const handleCreateMeme = async () => {
       />
     </div>
 
-    <!-- Meme genereren knop -->
     <div class="flex justify-center mt-6">
       <Button
         :label="isLoading ? 'Meme Genereren...' : 'Genereer Meme'"
@@ -94,7 +89,6 @@ const handleCreateMeme = async () => {
       />
     </div>
 
-    <!-- Gegenereerde meme weergeven -->
     <div v-if="generatedMeme" class="mt-6 text-center">
       <h3 class="text-lg font-medium">🎉 Je gegenereerde meme!</h3>
       <Image
@@ -107,7 +101,6 @@ const handleCreateMeme = async () => {
       <p class="text-green-600 font-semibold mt-2">Je meme is opgeslagen!</p>
     </div>
 
-    <!-- Sluiten knop -->
     <div class="flex justify-center mt-6">
       <Button label="Sluiten" @click="$emit('close')" class="p-button-danger p-button-lg" />
     </div>
