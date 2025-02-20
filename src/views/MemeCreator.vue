@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { fetchMemes, createMeme } from '@/api/memeAPI'
 import type { Meme } from '@/api/memeAPI'
-import Select from 'primevue/select'
+import Dropdown from 'primevue/Dropdown'
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 import Image from 'primevue/image'
@@ -52,31 +52,32 @@ const handleCreateMeme = async () => {
       {{ errorMessage }}
     </div>
 
-    <Select
-      v-model="selectedMeme"
-      :options="memes"
-      optionLabel="name"
-      placeholder="Kies een meme"
-      class="w-full mt-4"
-    />
-
     <div v-if="selectedMeme" class="mt-4 flex justify-center">
       <Image :src="selectedMeme.url" alt="Meme" width="300" preview class="rounded-lg shadow-md" />
     </div>
 
     <div class="mt-4">
-      <label class="text-gray-700 font-medium">Bovenste tekst</label>
+      <label class="text-gray-700 font-medium">text 1</label>
       <InputText
         v-model="topText"
         placeholder="Voer bovenste tekst in"
         class="w-full p-inputtext-lg"
       />
 
-      <label class="text-gray-700 font-medium mt-2 block">Onderste tekst</label>
+      <label class="text-gray-700 font-medium mt-2 block">text 2</label>
       <InputText
         v-model="bottomText"
         placeholder="Voer onderste tekst in"
         class="w-full p-inputtext-lg"
+      />
+    </div>
+    <div class="">
+      <Dropdown
+        v-model="selectedMeme"
+        :options="memes"
+        optionLabel="name"
+        placeholder="Kies een meme"
+        class="w-full mt-6"
       />
     </div>
 
@@ -99,10 +100,6 @@ const handleCreateMeme = async () => {
         class="rounded-lg shadow-lg mx-auto"
       />
       <p class="text-green-600 font-semibold mt-2">Je meme is opgeslagen!</p>
-    </div>
-
-    <div class="flex justify-center mt-6">
-      <Button label="Sluiten" @click="$emit('close')" class="p-button-danger p-button-lg" />
     </div>
   </div>
 </template>
