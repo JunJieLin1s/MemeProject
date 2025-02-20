@@ -4,7 +4,6 @@ import { fetchMemes } from '@/api/memeAPI'
 import type { Meme } from '@/api/memeAPI'
 import Card from 'primevue/card'
 import Image from 'primevue/image'
-import Button from 'primevue/button'
 
 const memes = ref<Meme[]>([])
 const loading = ref<boolean>(true)

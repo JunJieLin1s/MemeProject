@@ -24,23 +24,26 @@ export async function createMeme(
   bottomText: string,
 ): Promise<string> {
   try {
+    const params = {
+      template_id: templateId,
+      text0: topText,
+      text1: bottomText,
+      username: 'Junjies',
+      password: 'cnm_nba.det@agt6KGK',
+    }
     const response = await axios.post(`${API_BASE_URL}/caption_image`, null, {
-      params: {
-        template_id: templateId,
-        text0: topText,
-        text1: bottomText,
-        username: 'Junjies',
-        password: 'cnm_nba.det@agt6KGK',
-      },
+      params,
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, // Zorgt dat het niet geblokkeerd wordt
+      withCredentials: false, // Voorkomt CORS-problemen
     })
 
     if (!response.data.success) {
-      throw new Error('Fout bij het genereren van de meme.')
+      throw new Error('Fout bij het genereren van de meme: ' + response.data.error_message)
     }
 
     return response.data.data.url
   } catch (error) {
-    console.error('Fout bij het maken van een meme:', error)
+    console.error('API-fout:', error)
     throw new Error('Kon de meme niet genereren.')
   }
 }
