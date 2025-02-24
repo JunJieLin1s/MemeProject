@@ -116,6 +116,10 @@ const handleCreateMeme = async () => {
         class="rounded-lg shadow-lg mx-auto"
       />
       <p class="text-green-600 font-semibold mt-2">Je meme is opgeslagen!</p>
+      <!-- Link toevoegen naar de gegenereerde meme -->
+      <a :href="generatedMeme" target="_blank" class="text-blue-500 underline mt-2 inline-block">
+        Ga direct naar je meme
+      </a>
     </div>
   </div>
 </template>
