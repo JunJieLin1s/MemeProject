@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { fetchMemes, createMeme } from '@/api/memeAPI'
 import type { Meme } from '@/api/memeAPI'
 import Dropdown from 'primevue/Dropdown'
@@ -14,9 +15,21 @@ const generatedMeme = ref<string | null>(null)
 const errorMessage = ref<string | null>(null)
 const isLoading = ref(false)
 
+const route = useRoute()
+
 onMounted(async () => {
   try {
     memes.value = await fetchMemes()
+
+    // Kijk of er een memeId in de query staat
+    const memeId = route.query.memeId as string | undefined
+    if (memeId) {
+      // Zoek de meme op basis van de id en selecteer deze
+      const meme = memes.value.find((m) => m.id === memeId)
+      if (meme) {
+        selectedMeme.value = meme
+      }
+    }
   } catch (error) {
     console.error('Fout bij het ophalen van memes:', error)
     errorMessage.value = 'Kan geen memes laden. Probeer het later opnieuw.'
