@@ -50,7 +50,12 @@ const selectMeme = (meme: Meme) => {
         @click="selectMeme(meme)"
       >
         <template #header>
-          <Image :src="meme.url" alt="Meme" class="w-full h-48 object-cover rounded-t-lg" preview />
+          <Image
+            :src="meme.url"
+            alt="Meme"
+            class="w-full justify-center h-48 object-cover rounded-t-lg"
+            preview
+          />
         </template>
         <template #title>
           <h3 class="text-lg font-semibold text-gray-900 text-center">{{ meme.name }}</h3>
