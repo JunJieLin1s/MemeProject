@@ -47,7 +47,7 @@ const selectMeme = (meme: Meme) => {
         v-for="meme in memes"
         :key="meme.id"
         class="shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer"
-        @click="selectMeme(meme)"
+        s
       >
         <template #header>
           <Image
@@ -66,6 +66,7 @@ const selectMeme = (meme: Meme) => {
               label="Maak Meme"
               icon="pi pi-pencil"
               class="p-button-outlined p-button-primary"
+              @click="selectMeme(meme)"
             />
           </div>
         </template>
