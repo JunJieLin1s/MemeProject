@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { fetchMemes, createMeme } from '@/api/memeAPI'
 import type { Meme } from '@/api/memeAPI'
 import Dropdown from 'primevue/Dropdown'
@@ -9,8 +9,7 @@ import Image from 'primevue/image'
 
 const memes = ref<Meme[]>([])
 const selectedMeme = ref<Meme | null>(null)
-const topText = ref('')
-const bottomText = ref('')
+const texts = ref<string[]>([]) // Dynamische array voor alle invoervelden
 const generatedMeme = ref<string | null>(null)
 const errorMessage = ref<string | null>(null)
 const isLoading = ref(false)
@@ -24,6 +23,13 @@ onMounted(async () => {
   }
 })
 
+// Wanneer er een meme wordt geselecteerd, initialiseert de texts array met lege strings
+watch(selectedMeme, (newMeme) => {
+  if (newMeme) {
+    texts.value = new Array(newMeme.box_count).fill('')
+  }
+})
+
 const handleCreateMeme = async () => {
   if (!selectedMeme.value) {
     errorMessage.value = 'Je moet eerst een meme kiezen!'
@@ -34,7 +40,7 @@ const handleCreateMeme = async () => {
   errorMessage.value = null
 
   try {
-    generatedMeme.value = await createMeme(selectedMeme.value.id, topText.value, bottomText.value)
+    generatedMeme.value = await createMeme(selectedMeme.value.id, texts.value)
   } catch (error) {
     console.error('Fout bij het genereren van de meme:', error)
     errorMessage.value = 'Meme genereren mislukt. Probeer opnieuw!'
@@ -57,20 +63,17 @@ const handleCreateMeme = async () => {
     </div>
 
     <div class="mt-4">
-      <label class="text-gray-700 font-medium">text 1</label>
-      <InputText
-        v-model="topText"
-        placeholder="Voer bovenste tekst in"
-        class="w-full p-inputtext-lg"
-      />
-
-      <label class="text-gray-700 font-medium mt-2 block">text 2</label>
-      <InputText
-        v-model="bottomText"
-        placeholder="Voer onderste tekst in"
-        class="w-full p-inputtext-lg"
-      />
+      <!-- Dynamisch gegenereerde invoervelden -->
+      <div v-for="(text, index) in texts" :key="index" class="mb-3">
+        <label class="text-gray-700 font-medium">Tekst {{ index + 1 }}</label>
+        <InputText
+          v-model="texts[index]"
+          :placeholder="`Voer tekst ${index + 1} in`"
+          class="w-full p-inputtext-lg"
+        />
+      </div>
     </div>
+
     <div class="">
       <Dropdown
         v-model="selectedMeme"

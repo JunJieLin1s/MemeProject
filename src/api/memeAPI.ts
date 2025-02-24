@@ -1,3 +1,4 @@
+// memeAPI.ts
 import axios from 'axios'
 
 const API_BASE_URL = 'https://api.imgflip.com'
@@ -6,6 +7,7 @@ export interface Meme {
   id: string
   name: string
   url: string
+  box_count: number // Toegevoegd zodat je weet hoeveel tekstvelden nodig zijn
 }
 
 export async function fetchMemes(): Promise<Meme[]> {
@@ -18,23 +20,23 @@ export async function fetchMemes(): Promise<Meme[]> {
   }
 }
 
-export async function createMeme(
-  templateId: string,
-  topText: string,
-  bottomText: string,
-): Promise<string> {
+export async function createMeme(templateId: string, texts: string[]): Promise<string> {
   try {
-    const params = {
+    const params: any = {
       template_id: templateId,
-      text0: topText,
-      text1: bottomText,
       username: 'Junjies',
       password: 'cnm_nba.det@agt6KGK',
     }
+
+    // Voeg voor elk tekstveld de box parameter toe
+    texts.forEach((text, index) => {
+      params[`boxes[${index}][text]`] = text
+    })
+
     const response = await axios.post(`${API_BASE_URL}/caption_image`, null, {
       params,
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, // Zorgt dat het niet geblokkeerd wordt
-      withCredentials: false, // Voorkomt CORS-problemen
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      withCredentials: false,
     })
 
     if (!response.data.success) {
